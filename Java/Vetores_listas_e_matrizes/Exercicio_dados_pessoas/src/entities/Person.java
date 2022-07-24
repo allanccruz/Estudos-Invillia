@@ -1,7 +1,6 @@
 package entities;
 
 public class Person {
-
     private char gender;
     private double height;
 
