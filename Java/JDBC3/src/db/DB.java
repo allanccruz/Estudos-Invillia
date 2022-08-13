@@ -1,0 +1,70 @@
+package db;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.sql.*;
+import java.util.Properties;
+
+public class DB {
+
+    //Métodos de conexão do programa com o banco de dados MYSQL
+    private static Connection connection = null;
+
+    public static  Connection getConnection() {
+        if (connection == null) {
+            try {
+                Properties props = loadProperties();
+                String url = props.getProperty("dburl");
+                connection = DriverManager.getConnection(url, props);
+            }
+            catch (SQLException exception) {
+                throw  new DbException(exception.getMessage());
+            }
+        }
+        return connection;
+    }
+
+    public static void closeConnection () {
+        if (connection != null) {
+            try {
+                connection.close();
+            }
+            catch (SQLException exception) {
+                throw new DbException(exception.getMessage());
+            }
+        }
+
+    }
+
+    private static Properties loadProperties() {
+        try (FileInputStream fs = new FileInputStream("db.properties")) {
+            Properties props = new Properties();
+            props.load(fs);
+            return props;
+        }
+        catch (IOException exception) {
+            throw new DbException(exception.getMessage());
+        }
+    }
+
+    //Métodos auxiliares para fechar os objetos Statement da conexão com o DB
+    public static void closeStatement(Statement statement) {
+        if (statement != null) {
+            try {
+                statement.close();
+            } catch (SQLException exception) {
+                throw new DbException(exception.getMessage());
+            }
+        }
+    }
+
+    public static void closeStatement(ResultSet resultSet) {
+        if (resultSet != null) {
+            try {
+                resultSet.close();
+            } catch (SQLException exception) {
+                throw new DbException(exception.getMessage());
+            }
+        }
+    }
+}
