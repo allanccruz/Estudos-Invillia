@@ -27,7 +27,7 @@ public class SellerDaoJDBC implements SellerDao {
 
         try {
             statement = connection.prepareStatement(
-                    "INSERT  INTO seller "
+                "INSERT  INTO seller "
                     + "(Name, Email, BirthDate, BaseSalary, DepartmentId) "
                     + "VALUES "
                     + "(?, ?, ?, ?, ?) ",
@@ -62,8 +62,31 @@ public class SellerDaoJDBC implements SellerDao {
     }
 
     @Override
-    public void update(Seller obj) {
+    public void update(Seller seller) {
+        PreparedStatement statement = null;
 
+        try {
+            statement = connection.prepareStatement(
+                "UPDATE seller "
+                    + "SET Name = ?, Email = ?, BirthDate = ?, BaseSalary = ?, DepartmentId = ? "
+                    + "WHERE Id  = ?");
+
+            statement.setString(1, seller.getName());
+            statement.setString(2, seller.getEmail());
+            statement.setDate(3, new java.sql.Date(seller.getBirthDate().getTime()));
+            statement.setDouble(4, seller.getBaseSalary());
+            statement.setInt(5, seller.getDepartment().getId());
+            statement.setInt(6, seller.getId());
+
+            statement.executeUpdate();
+
+        }
+        catch (SQLException exception) {
+            throw new DbException(exception.getMessage());
+        }
+        finally {
+            DB.closeStatement(statement);
+        }
     }
 
     @Override
@@ -78,7 +101,7 @@ public class SellerDaoJDBC implements SellerDao {
 
         try {
             statement = connection.prepareStatement(
-                    "SELECT seller.*, department.Name as DepName "
+                "SELECT seller.*, department.Name as DepName "
                     + "FROM seller INNER JOIN department "
                     + "ON seller.DepartmentId = department.Id "
                     + "WHERE seller.Id = ?");
@@ -127,10 +150,10 @@ public class SellerDaoJDBC implements SellerDao {
 
         try {
             statement = connection.prepareStatement(
-                    "SELECT seller.*, department.Name as DepName "
-                            + "FROM seller INNER JOIN department "
-                            + "ON seller.DepartmentId = department.Id "
-                            + "ORDER BY Name");
+                "SELECT seller.*, department.Name as DepName "
+                    + "FROM seller INNER JOIN department "
+                    + "ON seller.DepartmentId = department.Id "
+                    + "ORDER BY Name");
 
             resultSet = statement.executeQuery();
 
@@ -170,10 +193,10 @@ public class SellerDaoJDBC implements SellerDao {
         try {
             statement = connection.prepareStatement(
                 "SELECT seller.*, department.Name as DepName "
-                + "FROM seller INNER JOIN department "
-                + "ON seller.DepartmentId = department.Id "
-                + "WHERE DepartmentId = ? "
-                + "ORDER BY Name");
+                    + "FROM seller INNER JOIN department "
+                    + "ON seller.DepartmentId = department.Id "
+                    + "WHERE DepartmentId = ? "
+                    + "ORDER BY Name");
 
             statement.setInt(1, department.getId());
             resultSet = statement.executeQuery();
