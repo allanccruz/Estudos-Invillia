@@ -10,6 +10,7 @@ import java.util.UUID;
 public class ParkingSpotModel implements Serializable {
     public static final long serialVersionUID = 1L;
 
+    @org.hibernate.annotations.Type(type="uuid-char")
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
