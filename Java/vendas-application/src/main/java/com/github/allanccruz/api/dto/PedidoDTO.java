@@ -1,4 +1,4 @@
-package com.github.allanccruz.rest.dto;
+package com.github.allanccruz.api.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

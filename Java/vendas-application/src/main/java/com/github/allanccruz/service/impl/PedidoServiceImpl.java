@@ -4,13 +4,15 @@ import com.github.allanccruz.domain.entities.Cliente;
 import com.github.allanccruz.domain.entities.ItemPedido;
 import com.github.allanccruz.domain.entities.Pedido;
 import com.github.allanccruz.domain.entities.Produto;
+import com.github.allanccruz.domain.enums.StatusPedido;
 import com.github.allanccruz.domain.repository.ClientesRepository;
 import com.github.allanccruz.domain.repository.ItensPedidoRepository;
 import com.github.allanccruz.domain.repository.PedidosRepository;
 import com.github.allanccruz.domain.repository.ProdutosRepository;
+import com.github.allanccruz.exceptions.PedidoNaoEncontradoException;
 import com.github.allanccruz.exceptions.RegraDeNegocioException;
-import com.github.allanccruz.rest.dto.ItemPedidoDTO;
-import com.github.allanccruz.rest.dto.PedidoDTO;
+import com.github.allanccruz.api.dto.ItemPedidoDTO;
+import com.github.allanccruz.api.dto.PedidoDTO;
 import com.github.allanccruz.service.PedidoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -41,12 +44,29 @@ public class PedidoServiceImpl implements PedidoService {
         pedido.setTotal(dto.getTotal());
         pedido.setDataPedido(LocalDate.now());
         pedido.setCliente(cliente);
+        pedido.setStatus(StatusPedido.REALIZADO);
 
         List<ItemPedido> itensPedido = converterItens(pedido, dto.getItens());
         pedidosRepository.save(pedido);
         itensPedidoRepository.saveAll(itensPedido);
         pedido.setItens(itensPedido);
         return pedido;
+    }
+
+    @Override
+    public Optional<Pedido> getPedido(Integer id) {
+        return pedidosRepository.findByIdFetchItens(id);
+    }
+
+    @Override
+    @Transactional
+    public void atualizarStatus(Integer id, StatusPedido statusPedido) {
+        pedidosRepository
+                .findById(id)
+                .map( pedido -> {
+                    pedido.setStatus(statusPedido);
+                    return pedidosRepository.save(pedido);
+                }).orElseThrow(() -> new PedidoNaoEncontradoException() );
     }
 
     private List<ItemPedido> converterItens(Pedido pedido, List<ItemPedidoDTO> itens){
