@@ -29,4 +29,9 @@ public class CarController {
     public Optional<Car> getCarById(@PathVariable Long id) { //Pra passar o parãmetro na URL
         return carService.getCarById(id);
     }
+
+    @GetMapping("/tipo/{type}")
+    public Iterable<Car> getCarsByType(@PathVariable String type) { //Pra passar o parãmetro na URL
+        return carService.getCarsByType(type);
+    }
 }

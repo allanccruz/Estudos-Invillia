@@ -17,4 +17,6 @@ public class Car {
     private Long id;
     @Column
     private String name;
+    @Column
+    private String type;
 }

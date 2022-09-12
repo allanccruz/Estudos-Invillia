@@ -25,14 +25,16 @@ public class CarService {
         return carRepository.findById(id);
     }
 
-    public List<Car> getFakeCars () {
-        List<Car> cars = new ArrayList<>();
-        cars.add(new Car(1L, "Fusca"));
-        cars.add(new Car(2L, "Brasilia"));
-        cars.add(new Car(3L, "Kombi"));
-
-        return cars;
+    public Iterable<Car> getCarsByType(String type) {
+        return carRepository.findByType(type);
     }
 
-
+//    public List<Car> getFakeCars () {
+//        List<Car> cars = new ArrayList<>();
+//        cars.add(new Car(1L, "Fusca"));
+//        cars.add(new Car(2L, "Brasilia"));
+//        cars.add(new Car(3L, "Kombi"));
+//
+//        return cars;
+//    }
 }
