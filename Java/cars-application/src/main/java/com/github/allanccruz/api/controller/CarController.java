@@ -12,10 +12,14 @@ import java.util.List;
 @RequestMapping("/api/v1/cars")
 public class CarController {
 
-    private CarService carService = new CarService();
+    private CarService carService;
+
+    public CarController(CarService carService) {
+        this.carService = carService;
+    }
 
     @GetMapping
-    public List<Car> getCars() {
-        return carService.getCars();
+    public Iterable<Car> getCars() {
+        return carService.getFakeCars();
     }
 }
