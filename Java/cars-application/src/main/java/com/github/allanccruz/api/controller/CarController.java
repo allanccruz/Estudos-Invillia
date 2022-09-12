@@ -3,10 +3,12 @@ package com.github.allanccruz.api.controller;
 import com.github.allanccruz.domain.entities.Car;
 import com.github.allanccruz.service.CarService;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/cars")
@@ -20,6 +22,11 @@ public class CarController {
 
     @GetMapping
     public Iterable<Car> getCars() {
-        return carService.getFakeCars();
+        return carService.getCars();
+    }
+
+    @GetMapping("/{id}")
+    public Optional<Car> getCarById(@PathVariable Long id) { //Pra passar o parãmetro na URL
+        return carService.getCarById(id);
     }
 }
