@@ -1,8 +1,10 @@
 package com.github.allanccruz.domain.repository;
 
 import com.github.allanccruz.domain.entities.Car;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface CarRepository extends CrudRepository <Car, Long> {
-    Iterable<Car> findByType(String type);
+import java.util.List;
+
+public interface CarRepository extends JpaRepository<Car, Long> {
+    List<Car> findByType(String type);
 }
