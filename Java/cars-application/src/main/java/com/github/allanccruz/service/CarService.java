@@ -54,4 +54,14 @@ public class CarService {
             throw new RuntimeException("Car not found.");
         }
     }
+
+    public void deleteCarById(Long id) {
+        Optional<Car> existCar = getCarById(id);
+        if(existCar.isPresent()) {
+            carRepository.deleteById(id);
+        }
+        else {
+            throw new RuntimeException("Car not found.");
+        }
+    }
 }
