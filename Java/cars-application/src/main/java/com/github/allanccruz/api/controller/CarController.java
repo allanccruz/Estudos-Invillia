@@ -36,4 +36,9 @@ public class CarController {
     public void postCar(@RequestBody Car car) {
         carService.saveCar(car);
     }
+
+    @PutMapping("/{id}")
+    public Car updateCarById(@PathVariable("id") Long id, @RequestBody Car car) {
+        return carService.updateCarById(id, car);
+    }
 }
