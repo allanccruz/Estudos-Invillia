@@ -74,6 +74,7 @@ public class CarController {
     public ResponseEntity deleteCarById(@PathVariable("id") Long id) {
         Optional<CarDTO> carExists = carService.getCarById(id);
         if(carExists.isPresent()) {
+            carService.deleteCarById(id);
             return ResponseEntity.ok().build();
         }
         else {

@@ -15,8 +15,11 @@ public class Car {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column
     private String name;
-    @Column
+    private String description;
+    private String urlFoto;
+    private String urlVideo;
+    private String latitude;
+    private String longitude;
     private String type;
 }

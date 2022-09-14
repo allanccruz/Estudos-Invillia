@@ -1,0 +1,9 @@
+insert into car (name,description,url_foto,url_video,latitude,longitude,type) VALUES('Tucker 1948','Descrição Tucker 1948','http://www.livroandroid.com.br/livro/carros/classicos/Tucker.png','http://www.livroandroid.com.br/livro/carros/classicos/tucker.mp4','-23.564224','-46.653156','classicos');
+insert into car (name,description,url_foto,url_video,latitude,longitude,type) VALUES('Chevrolet Corvette','Descrição Chevrolet Corvette','http://www.livroandroid.com.br/livro/carros/classicos/Chevrolet_Corvette.png','http://www.livroandroid.com.br/livro/carros/classicos/corvette.mp4','-23.564224','-46.653156','classicos');
+
+insert into car (name,description,url_foto,url_video,latitude,longitude,type) VALUES('Ferrari FF','Descrição Ferrari FF','http://www.livroandroid.com.br/livro/carros/esportivos/Ferrari_FF.png','http://www.livroandroid.com.br/livro/carros/esportivos/ferrari_ff.mp4','44.532218','10.864019','esportivos');
+insert into car (name,description,url_foto,url_video,latitude,longitude,type) VALUES('AUDI GT Spyder','Descrição AUDI GT Spyder','http://www.livroandroid.com.br/livro/carros/esportivos/Audi_Spyder.png','http://www.livroandroid.com.br/livro/carros/esportivos/audi_gt.mp4','-23.564224','-46.653156','esportivos');
+
+insert into car (name,description,url_foto,url_video,latitude,longitude,type) VALUES('Bugatti Veyron','Descrição Bugatti Veyron','http://www.livroandroid.com.br/livro/carros/luxo/Bugatti_Veyron.png','http://www.livroandroid.com.br/livro/carros/luxo/bugatti_veyron.mp4','-23.564224','-46.653156','luxo');
+insert into car (name,description,url_foto,url_video,latitude,longitude,type) VALUES('Ferrari Enzo','Descrição Ferrari Enzo','http://www.livroandroid.com.br/livro/carros/luxo/Ferrari_Enzo.png','http://www.livroandroid.com.br/livro/carros/luxo/ferrari_enzo.mp4','-23.564224','-46.653156','luxo');
+
