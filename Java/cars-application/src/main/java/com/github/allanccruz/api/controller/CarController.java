@@ -7,7 +7,9 @@ import org.hibernate.dialect.H2Dialect;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
@@ -56,11 +58,18 @@ public class CarController {
     public ResponseEntity postCar(@RequestBody Car car) {
         try {
             carService.saveCar(car);
-            return ResponseEntity.created(null).build();
+            URI location = getUri(car.getId());
+            return ResponseEntity.created(location).build();
         }
         catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }
+    }
+
+    //Monta a URL do novo objeto criado e retorna ela no header da requisição
+    private URI getUri(Long id) {
+        return ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+                .buildAndExpand(id).toUri();
     }
 
     @PutMapping("/{id}")
