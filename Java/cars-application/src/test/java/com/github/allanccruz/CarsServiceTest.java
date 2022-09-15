@@ -1,6 +1,7 @@
 package com.github.allanccruz;
 
 import com.github.allanccruz.api.dto.CarDTO;
+import com.github.allanccruz.api.exceptions.ObjectNotFoundException;
 import com.github.allanccruz.domain.entities.Car;
 import com.github.allanccruz.service.CarService;
 import org.junit.Test;
@@ -27,25 +28,29 @@ public class CarsServiceTest {
         car.setName("Car Test");
         car.setType("test");
 
-        CarDTO carDTo = carService.saveCar(car);
-        assertNotNull(carDTo);
+        CarDTO carDTO = carService.saveCar(car);
+        assertNotNull(carDTO);
 
-        Long id = carDTo.getId();
+        Long id = carDTO.getId();
         assertNotNull(id);
 
         //Buscar o objeto no db
-        Optional<CarDTO> op = carService.getCarById(id);
-        assertTrue(op.isPresent());
+        carDTO = carService.getCarById(id);
+        assertNotNull(carDTO);
 
-        carDTo = op.get();
-        assertEquals("Car Test", carDTo.getName());
-        assertEquals("test", carDTo.getType());
+        assertEquals("Car Test", car.getName());
+        assertEquals("test", car.getType());
 
         //Deletar o objeto do db
         carService.deleteCarById(id);
 
         //Verificar se deletou
-        assertFalse(carService.getCarById(id).isPresent());
+        try {
+            assertNull(carService.getCarById(id));
+            fail("Car not excluded");
+        } catch (ObjectNotFoundException e) {
+            //OK
+        }
     }
 
     @Test
@@ -56,11 +61,9 @@ public class CarsServiceTest {
 
     @Test
     public void testingGetOneCar() {
-        Optional<CarDTO> car = carService.getCarById(4L);
-        assertTrue(car.isPresent());
-
-        CarDTO c = car.get();
-        assertEquals("AUDI GT Spyder", c.getName());
+        CarDTO car = carService.getCarById(4L);
+        assertNotNull(car);
+        assertEquals("AUDI GT Spyder", car.getName());
     }
 
     @Test

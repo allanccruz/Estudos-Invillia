@@ -3,8 +3,6 @@ package com.github.allanccruz.api.controller;
 import com.github.allanccruz.api.dto.CarDTO;
 import com.github.allanccruz.domain.entities.Car;
 import com.github.allanccruz.service.CarService;
-import org.hibernate.dialect.H2Dialect;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -31,39 +29,22 @@ public class CarController {
 
     @GetMapping("/{id}")
     public ResponseEntity getCarById(@PathVariable Long id) { //Pra passar o parãmetro na URL
-        Optional<CarDTO> carExists = carService.getCarById(id);
+        CarDTO carExists = carService.getCarById(id);
 
-        return carExists.map(c -> ResponseEntity.ok(c))
-                .orElse(ResponseEntity.notFound().build());
-
-//        return carExists.isPresent() ? ResponseEntity.ok(carExists.get()) : ResponseEntity.notFound().build();
-
-//        if (carExists.isPresent()) {
-//            return ResponseEntity.ok(carExists.get());
-//        }
-//        else {
-//            return ResponseEntity.notFound().build();
-//        }
-
+        return ResponseEntity.ok(carExists);
     }
 
     @GetMapping("/tipo/{type}")
     public ResponseEntity<List<CarDTO>> getCarsByType(@PathVariable String type) { //Pra passar o parãmetro na URL
         List<CarDTO> cars = carService.getCarsByType(type);
-
         return cars.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(cars);
     }
 
     @PostMapping
     public ResponseEntity postCar(@RequestBody Car car) {
-        try {
             carService.saveCar(car);
             URI location = getUri(car.getId());
             return ResponseEntity.created(location).build();
-        }
-        catch (Exception e) {
-            return ResponseEntity.badRequest().build();
-        }
     }
 
     //Monta a URL do novo objeto criado e retorna ela no header da requisição
@@ -81,13 +62,7 @@ public class CarController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity deleteCarById(@PathVariable("id") Long id) {
-        Optional<CarDTO> carExists = carService.getCarById(id);
-        if(carExists.isPresent()) {
             carService.deleteCarById(id);
             return ResponseEntity.ok().build();
-        }
-        else {
-            return ResponseEntity.notFound().build();
-        }
     }
 }

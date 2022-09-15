@@ -1,12 +1,12 @@
 package com.github.allanccruz.service;
 
 import com.github.allanccruz.api.dto.CarDTO;
+import com.github.allanccruz.api.exceptions.ObjectNotFoundException;
 import com.github.allanccruz.domain.entities.Car;
 import com.github.allanccruz.domain.repository.CarRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -24,8 +24,8 @@ public class CarService {
         return carRepository.findAll().stream().map(c -> CarDTO.create(c)).collect(Collectors.toList());
     }
 
-    public Optional<CarDTO> getCarById(Long id) {
-        return carRepository.findById(id).map(c -> CarDTO.create(c));
+    public CarDTO getCarById(Long id) {
+        return carRepository.findById(id).map(c -> CarDTO.create(c)).orElseThrow(() -> new ObjectNotFoundException("Car not found"));
     }
 
     public List<CarDTO> getCarsByType(String type) {
@@ -33,6 +33,7 @@ public class CarService {
     }
 
     public CarDTO saveCar(Car car) {
+        Assert.isNull(car.getId(), "Car id must be null");
         return CarDTO.create(carRepository.save(car));
     }
 
