@@ -18,5 +18,3 @@ public class ExeptionConfig {
         return ResponseEntity.badRequest().build();
     }
 }
-
-
