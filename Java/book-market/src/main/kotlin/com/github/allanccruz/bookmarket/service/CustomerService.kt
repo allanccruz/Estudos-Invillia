@@ -1,6 +1,5 @@
 package com.github.allanccruz.bookmarket.service
 
-import com.github.allanccruz.bookmarket.dto.CustomerDTO
 import com.github.allanccruz.bookmarket.model.CustomerModel
 import org.springframework.stereotype.Service
 
@@ -20,17 +19,19 @@ class CustomerService {
         return customers.filter { it.id == id }.first()
     }
 
-    fun saveCustomer(customer: CustomerDTO) {
+    fun saveCustomer(customer: CustomerModel) {
         val id = if (customers.isEmpty()) {
             1
         } else {
-            customers.last().id.toInt() + 1
+            customers.last().id!!.toInt() + 1
         }.toString()
 
-        customers.add(CustomerModel(id, customer.name, customer.email))
+        customer.id = id
+
+        customers.add(customer)
     }
 
-    fun updateCustomer(id: String, customer: CustomerDTO) {
+    fun updateCustomer(id: String, customer: CustomerModel) {
         customers.filter { it.id == id }.first().let {
             it.name = customer.name
             it.email = customer.email

@@ -1,6 +1,7 @@
 package com.github.allanccruz.bookmarket.controllers
 
 import com.github.allanccruz.bookmarket.dto.CustomerDTO
+import com.github.allanccruz.bookmarket.extension.toCustomerModel
 import com.github.allanccruz.bookmarket.model.CustomerModel
 import com.github.allanccruz.bookmarket.service.CustomerService
 import org.springframework.http.HttpStatus
@@ -26,13 +27,13 @@ class CustomerController (
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     fun saveCustomer(@RequestBody customer: CustomerDTO) {
-        customerService.saveCustomer(customer)
+        customerService.saveCustomer(customer.toCustomerModel())
     }
 
    @PutMapping("/{id}")
    @ResponseStatus(HttpStatus.NO_CONTENT)
     fun updateCustomer(@PathVariable id: String, @RequestBody customer: CustomerDTO) {
-        customerService.updateCustomer(id, customer)
+        customerService.updateCustomer(id, customer.toCustomerModel())
     }
 
     @DeleteMapping("/{id}")
