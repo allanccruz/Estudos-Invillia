@@ -1,44 +1,42 @@
 package com.github.allanccruz.bookmarket.service
 
 import com.github.allanccruz.bookmarket.model.CustomerModel
+import com.github.allanccruz.bookmarket.repository.CustomerRepository
 import org.springframework.stereotype.Service
 
 @Service
-class CustomerService {
-
-    val customers = mutableListOf<CustomerModel>()
+class CustomerService (
+    val customerRepository: CustomerRepository
+) {
 
     fun getAllCustomers(name: String?): List<CustomerModel> {
         name?.let {
-            return customers.filter { it.name.contains(name, true) }
+            return customerRepository.findByNameContaining(it)
         }
-        return customers
+        return customerRepository.findAll()
     }
 
     fun getCustomer(id: Int): CustomerModel {
-        return customers.filter { it.id == id }.first()
+        return customerRepository.findById(id).orElseThrow()
     }
 
     fun saveCustomer(customer: CustomerModel) {
-        val id = if (customers.isEmpty()) {
-            1
-        } else {
-            customers.last().id!!.toInt() + 1
-        }
-
-        customer.id = id
-
-        customers.add(customer)
+        customerRepository.save(customer)
     }
 
     fun updateCustomer(id: Int, customer: CustomerModel) {
-        customers.filter { it.id == id }.first().let {
-            it.name = customer.name
-            it.email = customer.email
+        customer.id = id
+
+        if(!customerRepository.existsById(customer.id!!)) {
+            throw Exception("Customer not found.")
         }
+        customerRepository.save(customer)
     }
 
     fun deleteCustomer(id: Int) {
-        customers.removeIf { it.id == id }
+        if(!customerRepository.existsById(id)) {
+            throw Exception("Customer not found.")
+        }
+        customerRepository.deleteById(id)
     }
 }
