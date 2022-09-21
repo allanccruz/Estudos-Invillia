@@ -1,7 +1,9 @@
 package com.github.allanccruz.bookmarket.controllers
 
 import com.github.allanccruz.bookmarket.dto.BookDTO
+import com.github.allanccruz.bookmarket.dto.UpdateBookDTO
 import com.github.allanccruz.bookmarket.extension.toBookModel
+import com.github.allanccruz.bookmarket.model.BookModel
 import com.github.allanccruz.bookmarket.service.BookService
 import com.github.allanccruz.bookmarket.service.CustomerService
 import org.springframework.http.HttpStatus
@@ -14,16 +16,6 @@ class BookController (
     val customerService: CustomerService
 ) {
 
-//    @GetMapping
-//    fun getAllCustomers(@RequestParam name: String?): List<CustomerModel> {
-//        return customerService.getAllCustomers(name)
-//    }
-//
-//    @GetMapping("/{id}")
-//    fun getCustomer(@PathVariable id: Int): CustomerModel {
-//        return customerService.getById(id)
-//    }
-
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     fun saveBook(@RequestBody bookDTO: BookDTO) {
@@ -31,15 +23,31 @@ class BookController (
         bookService.save(bookDTO.toBookModel(customer))
     }
 
-//    @PutMapping("/{id}")
-//    @ResponseStatus(HttpStatus.NO_CONTENT)
-//    fun updateCustomer(@PathVariable id: Int, @RequestBody customer: CustomerDTO) {
-//        customerService.updateCustomer(id, customer.toCustomerModel())
-//    }
-//
-//    @DeleteMapping("/{id}")
-//    @ResponseStatus(HttpStatus.NO_CONTENT)
-//    fun deleteCustomer(@PathVariable id: Int) {
-//        customerService.deleteCustomer(id)
-//    }
+    @GetMapping
+    fun getAllBooks(@RequestParam name: String?): List<BookModel> {
+        return bookService.findAllBooks()
+    }
+
+    @GetMapping("/actives")
+    fun getActivesBooks(): List<BookModel> {
+        return bookService.findActives()
+    }
+
+    @GetMapping("/{id}")
+    fun getBook(@PathVariable id: Int): BookModel {
+        return bookService.getById(id)
+    }
+
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    fun updateBook(@PathVariable id: Int, @RequestBody updateBookDTO: UpdateBookDTO) {
+        val book = bookService.getById(id)
+        bookService.updateBook(updateBookDTO.toBookModel(book))
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    fun deleteBook(@PathVariable id: Int) {
+        bookService.deleteBook(id)
+    }
 }
