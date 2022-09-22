@@ -5,9 +5,11 @@ import com.github.allanccruz.bookmarket.dto.BookDTO
 import com.github.allanccruz.bookmarket.dto.UpdateBookDTO
 import com.github.allanccruz.bookmarket.extension.toBookModel
 import com.github.allanccruz.bookmarket.extension.toResponse
-import com.github.allanccruz.bookmarket.model.BookModel
 import com.github.allanccruz.bookmarket.service.BookService
 import com.github.allanccruz.bookmarket.service.CustomerService
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
+import org.springframework.data.web.PageableDefault
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 
@@ -26,13 +28,13 @@ class BookController (
     }
 
     @GetMapping
-    fun getAllBooks(@RequestParam name: String?): List<BookResponse> {
-        return bookService.findAllBooks().map {it.toResponse()}
+    fun getAllBooks(@PageableDefault(page = 0, size = 10) pageable: Pageable): Page<BookResponse> {
+        return bookService.findAllBooks(pageable).map {it.toResponse()}
     }
 
     @GetMapping("/actives")
-    fun getActivesBooks(): List<BookResponse> {
-        return bookService.findActives().map {it.toResponse()}
+    fun getActivesBooks(@PageableDefault(page = 0, size = 10) pageable: Pageable): Page<BookResponse> {
+        return bookService.findActives(pageable).map {it.toResponse()}
     }
 
     @GetMapping("/{id}")

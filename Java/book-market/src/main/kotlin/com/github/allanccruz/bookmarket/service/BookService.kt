@@ -4,6 +4,8 @@ import com.github.allanccruz.bookmarket.enums.BookStatus
 import com.github.allanccruz.bookmarket.model.BookModel
 import com.github.allanccruz.bookmarket.model.CustomerModel
 import com.github.allanccruz.bookmarket.repository.BookRepository
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 
 @Service
@@ -15,12 +17,12 @@ class BookService(
         bookRepository.save(book)
     }
 
-    fun findAllBooks(): List<BookModel> {
-        return bookRepository.findAll()
+    fun findAllBooks(pageable: Pageable): Page<BookModel> {
+        return bookRepository.findAll(pageable)
     }
 
-    fun findActives(): List<BookModel> {
-        return bookRepository.findByStatus(BookStatus.ACTIVE)
+    fun findActives(pageable: Pageable): Page<BookModel> {
+        return bookRepository.findByStatus(BookStatus.ACTIVE, pageable)
     }
 
     fun getById(id: Int): BookModel {
