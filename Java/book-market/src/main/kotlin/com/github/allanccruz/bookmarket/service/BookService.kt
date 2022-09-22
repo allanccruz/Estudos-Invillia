@@ -1,7 +1,8 @@
 package com.github.allanccruz.bookmarket.service
 
-import com.github.allanccruz.bookmarket.BookStatus
+import com.github.allanccruz.bookmarket.enums.BookStatus
 import com.github.allanccruz.bookmarket.model.BookModel
+import com.github.allanccruz.bookmarket.model.CustomerModel
 import com.github.allanccruz.bookmarket.repository.BookRepository
 import org.springframework.stereotype.Service
 
@@ -19,7 +20,7 @@ class BookService(
     }
 
     fun findActives(): List<BookModel> {
-        return bookRepository.findByStatus(BookStatus.ATIVO)
+        return bookRepository.findByStatus(BookStatus.ACTIVE)
     }
 
     fun getById(id: Int): BookModel {
@@ -28,11 +29,19 @@ class BookService(
 
     fun deleteBook(id: Int) {
         val book = getById(id)
-        book.status = BookStatus.CANCELADO
+        book.status = BookStatus.CANCELED
         updateBook(book)
     }
 
     fun updateBook(book: BookModel) {
         bookRepository.save(book)
+    }
+
+    fun deleteByCustomer(customer: CustomerModel) {
+        val books = bookRepository.findByCustomer(customer)
+        for (book in books) {
+            book.status = BookStatus.DELETED
+        }
+        bookRepository.saveAll(books)
     }
 }

@@ -1,6 +1,7 @@
 package com.github.allanccruz.bookmarket.controllers
 
 import com.github.allanccruz.bookmarket.dto.CustomerDTO
+import com.github.allanccruz.bookmarket.dto.UpdateCustomerDTO
 import com.github.allanccruz.bookmarket.extension.toCustomerModel
 import com.github.allanccruz.bookmarket.model.CustomerModel
 import com.github.allanccruz.bookmarket.service.CustomerService
@@ -31,8 +32,9 @@ class CustomerController (
 
    @PutMapping("/{id}")
    @ResponseStatus(HttpStatus.NO_CONTENT)
-    fun updateCustomer(@PathVariable id: Int, @RequestBody customerDTO: CustomerDTO) {
-       customerService.updateCustomer(id, customerDTO.toCustomerModel())
+    fun updateCustomer(@PathVariable id: Int, @RequestBody updateCustomerDTO: UpdateCustomerDTO) {
+       val customer = customerService.getById(id)
+       customerService.updateCustomer(id, updateCustomerDTO.toCustomerModel(customer))
     }
 
     @DeleteMapping("/{id}")

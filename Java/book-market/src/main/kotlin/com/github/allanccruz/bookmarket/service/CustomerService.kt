@@ -1,12 +1,14 @@
 package com.github.allanccruz.bookmarket.service
 
+import com.github.allanccruz.bookmarket.enums.CustomerStatus
 import com.github.allanccruz.bookmarket.model.CustomerModel
 import com.github.allanccruz.bookmarket.repository.CustomerRepository
 import org.springframework.stereotype.Service
 
 @Service
 class CustomerService (
-    val customerRepository: CustomerRepository
+    val customerRepository: CustomerRepository,
+    val bookService: BookService
 ) {
 
     fun getAllCustomers(name: String?): List<CustomerModel> {
@@ -25,8 +27,6 @@ class CustomerService (
     }
 
     fun updateCustomer(id: Int, customer: CustomerModel) {
-        customer.id = id
-
         if(!customerRepository.existsById(customer.id!!)) {
             throw Exception("Customer not found.")
         }
@@ -34,9 +34,10 @@ class CustomerService (
     }
 
     fun deleteCustomer(id: Int) {
-        if(!customerRepository.existsById(id)) {
-            throw Exception("Customer not found.")
-        }
-        customerRepository.deleteById(id)
+        val customer = getById(id)
+        bookService.deleteByCustomer(customer)
+
+        customer.status = CustomerStatus.INACTIVE
+        customerRepository.save(customer)
     }
 }

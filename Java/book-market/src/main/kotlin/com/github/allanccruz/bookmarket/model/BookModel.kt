@@ -1,6 +1,6 @@
 package com.github.allanccruz.bookmarket.model
 
-import com.github.allanccruz.bookmarket.BookStatus
+import com.github.allanccruz.bookmarket.enums.BookStatus
 import java.math.BigDecimal
 import javax.persistence.*
 
