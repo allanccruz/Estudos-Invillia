@@ -1,6 +1,8 @@
 package com.github.allanccruz.bookmarket.model
 
 import com.github.allanccruz.bookmarket.enums.BookStatus
+import com.github.allanccruz.bookmarket.enums.Errors
+import com.github.allanccruz.bookmarket.exception.BadRequestException
 import java.math.BigDecimal
 import javax.persistence.*
 
@@ -26,7 +28,7 @@ data class BookModel (
     var status: BookStatus? = null
         set(value) {
             if (field == BookStatus.CANCELED || field == BookStatus.DELETED) {
-                throw Exception("Book status is canceled or deleted and cannot be changed.")
+                throw BadRequestException(Errors.ML102.message.format(field), Errors.ML102.code)
             }
             field = value
         }
