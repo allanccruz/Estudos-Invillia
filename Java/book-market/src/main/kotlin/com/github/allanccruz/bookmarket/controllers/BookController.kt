@@ -1,8 +1,10 @@
 package com.github.allanccruz.bookmarket.controllers
 
+import com.github.allanccruz.bookmarket.controllers.response.BookResponse
 import com.github.allanccruz.bookmarket.dto.BookDTO
 import com.github.allanccruz.bookmarket.dto.UpdateBookDTO
 import com.github.allanccruz.bookmarket.extension.toBookModel
+import com.github.allanccruz.bookmarket.extension.toResponse
 import com.github.allanccruz.bookmarket.model.BookModel
 import com.github.allanccruz.bookmarket.service.BookService
 import com.github.allanccruz.bookmarket.service.CustomerService
@@ -24,18 +26,18 @@ class BookController (
     }
 
     @GetMapping
-    fun getAllBooks(@RequestParam name: String?): List<BookModel> {
-        return bookService.findAllBooks()
+    fun getAllBooks(@RequestParam name: String?): List<BookResponse> {
+        return bookService.findAllBooks().map {it.toResponse()}
     }
 
     @GetMapping("/actives")
-    fun getActivesBooks(): List<BookModel> {
-        return bookService.findActives()
+    fun getActivesBooks(): List<BookResponse> {
+        return bookService.findActives().map {it.toResponse()}
     }
 
     @GetMapping("/{id}")
-    fun getBook(@PathVariable id: Int): BookModel {
-        return bookService.getById(id)
+    fun getBook(@PathVariable id: Int): BookResponse {
+        return bookService.getById(id).toResponse()
     }
 
     @PutMapping("/{id}")

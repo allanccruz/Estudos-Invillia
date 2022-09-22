@@ -1,5 +1,7 @@
 package com.github.allanccruz.bookmarket.extension
 
+import com.github.allanccruz.bookmarket.controllers.response.BookResponse
+import com.github.allanccruz.bookmarket.controllers.response.CustomerResponse
 import com.github.allanccruz.bookmarket.enums.BookStatus
 import com.github.allanccruz.bookmarket.dto.BookDTO
 import com.github.allanccruz.bookmarket.dto.CustomerDTO
@@ -15,6 +17,10 @@ fun CustomerDTO.toCustomerModel(): CustomerModel {
 
 fun UpdateCustomerDTO.toCustomerModel(previousValue: CustomerModel): CustomerModel {
     return CustomerModel(id = previousValue.id, name = this.name, email = this.email, status = previousValue.status)
+}
+
+fun CustomerModel.toResponse(): CustomerResponse {
+    return CustomerResponse(id = this.id, name = this.name, email = this.email, status = this.status)
 }
 
 fun BookDTO.toBookModel(customer: CustomerModel): BookModel {
@@ -33,5 +39,14 @@ fun UpdateBookDTO.toBookModel(previousValue: BookModel): BookModel {
         price = this.price ?: previousValue.price,
         status = previousValue.status,
         customer = previousValue.customer
+    )
+}
+
+fun BookModel.toResponse(): BookResponse {
+    return BookResponse(id = this.id,
+        name = this.name,
+        price = this.price,
+        customer = this.customer,
+        status = this.status
     )
 }

@@ -1,9 +1,10 @@
 package com.github.allanccruz.bookmarket.controllers
 
+import com.github.allanccruz.bookmarket.controllers.response.CustomerResponse
 import com.github.allanccruz.bookmarket.dto.CustomerDTO
 import com.github.allanccruz.bookmarket.dto.UpdateCustomerDTO
 import com.github.allanccruz.bookmarket.extension.toCustomerModel
-import com.github.allanccruz.bookmarket.model.CustomerModel
+import com.github.allanccruz.bookmarket.extension.toResponse
 import com.github.allanccruz.bookmarket.service.CustomerService
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
@@ -21,13 +22,13 @@ class CustomerController (
     }
 
     @GetMapping
-    fun getAllCustomers(@RequestParam name: String?): List<CustomerModel> {
-        return customerService.getAllCustomers(name)
+    fun getAllCustomers(@RequestParam name: String?): List<CustomerResponse> {
+        return customerService.getAllCustomers(name).map{it.toResponse()}
     }
 
     @GetMapping("/{id}")
-    fun getCustomer(@PathVariable id: Int): CustomerModel {
-        return customerService.getById(id)
+    fun getCustomer(@PathVariable id: Int): CustomerResponse {
+        return customerService.getById(id).toResponse()
     }
 
    @PutMapping("/{id}")
