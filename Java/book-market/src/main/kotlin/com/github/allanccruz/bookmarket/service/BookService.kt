@@ -1,6 +1,7 @@
 package com.github.allanccruz.bookmarket.service
 
 import com.github.allanccruz.bookmarket.enums.BookStatus
+import com.github.allanccruz.bookmarket.exception.NotFoundException
 import com.github.allanccruz.bookmarket.model.BookModel
 import com.github.allanccruz.bookmarket.model.CustomerModel
 import com.github.allanccruz.bookmarket.repository.BookRepository
@@ -26,7 +27,7 @@ class BookService(
     }
 
     fun getById(id: Int): BookModel {
-       return bookRepository.findById(id).orElseThrow()
+       return bookRepository.findById(id).orElseThrow{ NotFoundException("Book [${id}] not exists", "ML-0001") }
     }
 
     fun deleteBook(id: Int) {

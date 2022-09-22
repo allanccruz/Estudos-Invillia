@@ -43,7 +43,8 @@ fun UpdateBookDTO.toBookModel(previousValue: BookModel): BookModel {
 }
 
 fun BookModel.toResponse(): BookResponse {
-    return BookResponse(id = this.id,
+    return BookResponse(
+        id = this.id,
         name = this.name,
         price = this.price,
         customer = this.customer,
