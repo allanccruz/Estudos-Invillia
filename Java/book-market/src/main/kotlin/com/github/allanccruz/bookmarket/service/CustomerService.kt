@@ -1,6 +1,7 @@
 package com.github.allanccruz.bookmarket.service
 
 import com.github.allanccruz.bookmarket.enums.CustomerStatus
+import com.github.allanccruz.bookmarket.enums.Errors
 import com.github.allanccruz.bookmarket.exception.NotFoundException
 import com.github.allanccruz.bookmarket.model.CustomerModel
 import com.github.allanccruz.bookmarket.repository.CustomerRepository
@@ -20,7 +21,7 @@ class CustomerService (
     }
 
     fun getById(id: Int): CustomerModel {
-        return customerRepository.findById(id).orElseThrow{ NotFoundException("Customer [${id}] not exists", "ML-0002") }
+        return customerRepository.findById(id).orElseThrow{ NotFoundException(Errors.ML201.message.format(id), Errors.ML201.code) }
     }
 
     fun saveCustomer(customer: CustomerModel) {
