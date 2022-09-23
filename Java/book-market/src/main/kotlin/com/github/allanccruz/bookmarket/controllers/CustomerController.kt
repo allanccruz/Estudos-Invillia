@@ -8,6 +8,7 @@ import com.github.allanccruz.bookmarket.extension.toResponse
 import com.github.allanccruz.bookmarket.service.CustomerService
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
+import javax.validation.Valid
 
 @RestController
 @RequestMapping("api/book-market/customers")
@@ -17,7 +18,7 @@ class CustomerController (
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    fun saveCustomer(@RequestBody customerDTO: CustomerDTO) {
+    fun saveCustomer(@RequestBody @Valid customerDTO: CustomerDTO) {
         customerService.saveCustomer(customerDTO.toCustomerModel())
     }
 
