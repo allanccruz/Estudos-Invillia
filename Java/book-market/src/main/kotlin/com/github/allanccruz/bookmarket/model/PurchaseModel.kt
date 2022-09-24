@@ -29,6 +29,6 @@ data class PurchaseModel (
 
 
     @Column(name = "created_at")
-    val createdAt: LocalDateTime
+    val createdAt: LocalDateTime = LocalDateTime.now()
 
 )
